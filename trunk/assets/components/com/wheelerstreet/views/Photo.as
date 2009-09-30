@@ -1,0 +1,1 @@
+﻿package com.wheelerstreet.views{	import mx.flash.UIMovieClip;	import flash.text.TextField;	public class Photo extends UIMovieClip	{		public function Photo()		{			super();		}			}}
