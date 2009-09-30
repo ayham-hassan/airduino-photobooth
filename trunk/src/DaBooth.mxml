@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication 
+	backgroundImage="/images/plywood_flex.jpg" 	 
+	layout="absolute" 
+	applicationComplete="handleApplicationComplete()" 
+	
+	xmlns:media="flash.media.*" 
+	xmlns:local="*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:views="com.wheelerstreet.views.*">
+	<mx:Script>
+	<![CDATA[
+	
+		import com.wheelerstreet.controllers.MainController;
+		
+		protected var mainController:MainController;
+			
+		protected function handleApplicationComplete():void
+		{
+			// should do some config loading here
+			mainController = new MainController(this, button, photoStrip, frame);	
+		}
+		
+	
+	]]>
+	</mx:Script>
+	<mx:Label text="Photo Booth" fontSize="20" alpha=".3" fontFamily="Georgia" top="30" left="30" />
+	<mx:Canvas id="frame" borderStyle="solid" borderColor="#333333" borderThickness="4"   backgroundColor="#000000" backgroundAlpha=".3" width="1000" height="750" verticalCenter="0" horizontalCenter="150"/>
+	<views:PhotoStrip id="photoStrip" verticalCenter="0"  left="60" />
+	<views:RedButton id="button" left="50" bottom="20" mouseUp="{mainController.handleMouseUp(event)}" mouseDown="{mainController.handleMouseDown(event)}" />
+	 
+</mx:WindowedApplication>
