@@ -55,7 +55,7 @@ package com.wheelerstreet.arduino.serial
 		{			
 			_socket.connect( host, port );
 			
-			trace( "connecting" );
+			trace( "SerialPort: connecting" );
 		}
 		
 		public function send( value:String ):void
@@ -67,26 +67,26 @@ package com.wheelerstreet.arduino.serial
 		
 		private function onClose( event:Event ):void
 		{
-			trace( "onClose" );
+			trace( "SerialPort: onClose" );
 			dispatchEvent( event );
 		}
 		
 		private function onConnect( event:Event ):void
 		{
-			trace( "onConnect connectd:" +_socket.connected);
+			trace( "SerialPort: onConnect connectd:" +_socket.connected);
 			
 			dispatchEvent( event );
 		}
 		
 		private function onIOErrorEvent( event:IOErrorEvent ):void
 		{
-			trace( "onIOErrorEvent" );
+			trace( "SerialPort: onIOErrorEvent" );
 			dispatchEvent( event );
 		}
 		
 		private function onSecurityError( event:SecurityErrorEvent ):void
 		{
-			trace( "onSecurityError" );
+			trace( "SerialPort: onSecurityError" );
 			dispatchEvent( event );
 		}
 		

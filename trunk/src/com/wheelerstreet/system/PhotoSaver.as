@@ -3,11 +3,14 @@ package com.wheelerstreet.system
 	import com.adobe.images.PNGEncoder;
 	
 	import flash.display.BitmapData;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
+	
+	[Event(name="complete",type="flash.events.Event")]
 	
 	public class PhotoSaver extends EventDispatcher
 	{
@@ -24,6 +27,8 @@ package com.wheelerstreet.system
 		
 		protected var _byteArray:ByteArray;
 		
+		protected var _savingFile:Boolean;
+		
 		public function PhotoSaver(prefix:String)
 		{
 			if(prefix)
@@ -31,8 +36,7 @@ package com.wheelerstreet.system
 			else 
 				_prefix = FOLDER_PREFIX;	
 			
-			
-				
+			_savingFile = false;
 		}
 		
 		protected function getTimeStamp():String
@@ -43,7 +47,7 @@ package com.wheelerstreet.system
 		
 		protected function createRootFolder():void
 		{
-			var path:String = ROOT_FOLDER;
+			var path:String = ROOT_FOLDER.toString();
 			trace("making ROOT folder: "+path);			
 			var dir:File = File.desktopDirectory.resolvePath(path);
 			if(dir.exists)
@@ -54,7 +58,7 @@ package com.wheelerstreet.system
 		
 		protected function createNewSessionFolder():File
 		{
-			var path:String = ROOT_FOLDER + "/" + FOLDER_PREFIX + getTimeStamp();
+			var path:String = ROOT_FOLDER.toString() + "/" + FOLDER_PREFIX + getTimeStamp();
 			trace("making folder: "+path);			
 			var dir:File = File.desktopDirectory.resolvePath(path);
 			if(!dir.exists)
@@ -77,17 +81,23 @@ package com.wheelerstreet.system
 				_byteArray = null;
 			}
 			
+			if(_savingFile) {
+				// don't let the user try to save a file while busy	
+				return;
+			}
+			_savingFile = true;
+			
 			_byteArray = PNGEncoder.encode(bitmapData);
-			var path:String = _currentFolder+File.separator+FILE_PREFIX+"_"+_currentCount.toString()+".png";
+			var path:String = _currentFolder.nativePath+File.separator+_prefix+"_"+_currentCount.toString()+".png";
 			trace("making new file: "+path);
 			var newImage:File = File.desktopDirectory.resolvePath(path);
 			var fileStream:FileStream = new FileStream();
 			fileStream.open(newImage,FileMode.WRITE);
 			fileStream.writeBytes(_byteArray);
 			fileStream.close();
-			
 			_currentCount++;
-				
+			_savingFile = false;
+			dispatchEvent(new Event(Event.COMPLETE,false,false));
 		}
 		
 		public function endSession():void

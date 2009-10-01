@@ -3,8 +3,11 @@ package com.wheelerstreet.arduino.serial
 	import com.wheelerstreet.arduino.events.RealButtonEvent;
 	
 	import flash.events.DataEvent;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	
 	[Event(name="buttonStateUp",type="com.wheelerstreet.ardunio.events.RealButtonEvent")]
 	
@@ -26,7 +29,14 @@ package com.wheelerstreet.arduino.serial
 			super(target);
 			serialPort = new SerialPort();
 			serialPort.addEventListener(DataEvent.DATA, onArduinoData );
+			serialPort.addEventListener(IOErrorEvent.IO_ERROR, handleError);
+			serialPort.addEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
 			serialPort.connect(LOCALHOST,PORT);
+		}
+		
+		protected function handleError(e:Event):void
+		{
+			trace("SerialConnetion: Arduino Socket/Security Error");
 		}
 		
 		protected function onArduinoData( event:DataEvent ):void
