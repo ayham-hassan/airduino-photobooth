@@ -102,7 +102,7 @@ package com.wheelerstreet.controllers
 		
 		protected function initVideoComponents():void
 		{
-			// trace("Camera: "+Camera.names.length+" names: "+Camera.names);
+			trace("Camera: "+Camera.names.length+" names: "+Camera.names);
 			_camera = Camera.getCamera();
 			_camera.setMode(_frame.width,_frame.height,FPS,true);
 			_camera.setQuality(0,100);
@@ -131,7 +131,7 @@ package com.wheelerstreet.controllers
 		{
 			var thumb:BitmapData = new BitmapData(170,135,false);
 			var m:Matrix = new Matrix();
-			 m.scale(.17,.17)
+			 m.scale(.18,.18)
 			thumb.draw(_bitmapData,m);
 			var bitmap:Bitmap = new Bitmap(thumb);
 			
