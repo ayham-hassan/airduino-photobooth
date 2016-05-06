@@ -1,0 +1,1 @@
+A cross platform photo booth application that works with Arduino to make an external button.
